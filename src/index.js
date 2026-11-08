@@ -1,5 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import {connectDB} from './config/db.js';
+import bookRouter from './routes/book.routes.js';
 
 dotenv.config();
 
@@ -9,11 +11,10 @@ const PORT = process.env.PORT || 3000;
 //Middleware para interpretar JSON en req.doby
 app.use(express.json());
 
-//Ruta de prueba inicial
-app.get('/',(req,res) => {
-    res.json({message: '¡servidor base Express funcionando!' });
-});
+//conexion
+app.use('/books',bookRouter);
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
+    await connectDB();
     console.log(`Servidor escuchando en http://localhost:${PORT}`);
 });
